@@ -7,11 +7,19 @@ import ProductPage from './product';
 function App() {
   return (
     <div>
-      <Routes>
-        <Route exact={true} path="/" element={<MainPageComponent />} />
-        <Route exact={true} path="/products/:id" element={<ProductPage />} />
-        <Route exact={true} path="/upload" element={<UploadPage />} />
-      </Routes>
+      <div id="header">
+          <div id="header-area">
+              <img src="/images/icons/logo.png" />
+          </div>
+      </div>
+      <div id="body">
+        <Routes>
+          <Route  path="/" element={<MainPageComponent />} />
+          <Route  path="/products/:id" element={<ProductPage />} />
+          <Route  path="/upload" element={<UploadPage />} />
+        </Routes>
+      </div>
+      <div id="footer"></div>
     </div>
   );
 }
