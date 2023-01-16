@@ -1,15 +1,27 @@
+import 'antd/dist/reset.css';
 import './App.css';
 import MainPageComponent from './main/index.js';
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import UploadPage from './upload';
 import ProductPage from './product';
+import { Button } from 'antd';
+import { DownloadOutlined } from '@ant-design/icons';
 
 function App() {
+  const navigate = useNavigate();
   return (
     <div>
       <div id="header">
           <div id="header-area">
+            <Link to="/">
               <img src="/images/icons/logo.png" />
+            </Link>
+            <Button size='large'
+              onClick={()=> {
+                navigate('/upload');
+              }}
+              icon={<DownloadOutlined />}
+            >상품 업로드</Button>
           </div>
       </div>
       <div id="body">
