@@ -1,9 +1,36 @@
-import { Button, Divider, Form, Input, InputNumber } from "antd";
+import { Button, Divider, Form, Input, InputNumber, Upload, message } from "antd";
+import axios from "axios";
 import './index.css'
+import { useState } from "react";
+import { API_URL } from "../config/constatns.js"
+import { useNavigate  } from "react-router-dom"; 
 
 function UploadPage() {
+    const [imageUrl, setImageUrl] = useState(null);
+    const history = useNavigate();
+
     const onSubmit = (values) => {
-        console.log(values);
+        axios.post(`${API_URL}/products`,{
+            name : values.name,
+            description : values.description,
+            seller: values.seller,
+            price: parseInt(values.price),
+            imageUrl : imageUrl
+        }).then((result)=> {
+            history('/');
+        }).catch((error) => {
+            message.error(`에러가 발생하였습니다. ${error.message}`)
+        });
+    }
+    const onChangeImage = (info) => {
+        if(info.file.status === 'uploading') {
+            return;
+        }
+        if(info.file.status === 'done') {
+            const response = info.file.response;
+            const imageUrl = response.imageUrl;
+            setImageUrl(imageUrl);
+        }
     }
     return (
         <div id="upload-container">
@@ -12,10 +39,25 @@ function UploadPage() {
                     label={<div className="upload-label">상품 사진</div>}
                     name="upload"
                 >
-                    <div id="upload-img-placeholder">
-                        <img src="/images/icons/camera.png" />
-                        <span>이미지를 업로드해주세요.</span>
-                    </div>
+                    <Upload 
+                        name="image" 
+                        action={`${API_URL}/image`}
+                        listType="picture"
+                        showUploadList={false}
+                        onChange={onChangeImage}
+                    >
+                        {
+                            imageUrl ? (
+                                <img id="upload-img" src={`${API_URL}/${imageUrl}`} />
+                            ) : (
+                                <div id="upload-img-placeholder">
+                                    <img src="/images/icons/camera.png" />
+                                    <span>이미지를 업로드해주세요.</span>
+                                </div>
+                            )
+                        }
+
+                    </Upload>
                 </Form.Item>
                 <Divider />
                 <Form.Item label={<div className="upload-label">판매자 명</div>}
