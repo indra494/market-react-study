@@ -33,7 +33,7 @@ function App() {
       </div>
       <div id="footer"></div>
     </div>
-  );
+  ); 
 }
 
 export default App;
